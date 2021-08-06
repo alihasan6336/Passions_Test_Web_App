@@ -14,8 +14,6 @@ from datetime import timedelta
 
 app = Flask(__name__)
 
-app.config['SESSION_TYPE'] = 'filesystem'
-app.secret_key='secret123'
 
 @app.before_request
 def make_session_permanent():
@@ -29,13 +27,17 @@ if 'DB_USER' in os.environ :
     app.config["MYSQL_USER"] = os.environ['DB_USER']
     app.config["MYSQL_PASSWORD"] = os.environ['DB_PASSWORD']
     app.config["MYSQL_DB"] = os.environ['DB_NAME']
-    app.config["MYSQL_CURSORCLASS"] = "DictCursor"
+    app.secret_key= os.environ["SECRET_KEY"]
 else :
     app.config["MYSQL_HOST"] = "localhost"
     app.config["MYSQL_USER"] = "root"
-    app.config["MYSQL_PASSWORD"] = "M01019056637m"
-    app.config["MYSQL_DB"] = "passiontest"
-    app.config["MYSQL_CURSORCLASS"] = "DictCursor"
+    app.config["MYSQL_PASSWORD"] = "01019056677"
+    app.config["MYSQL_DB"] = "passionstest"
+    app.secret_key='secret123'
+
+app.config["MYSQL_CURSORCLASS"] = "DictCursor"
+app.config['SESSION_TYPE'] = 'filesystem'
+
 
 mysql = MySQL(app)
 
