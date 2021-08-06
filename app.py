@@ -191,7 +191,7 @@ def Register(company=MAIN_COMPANY):
         if company != MAIN_COMPANY:
             return redirect('/' + company + '/login')
         return redirect(url_for("Login"))
-
+ 
 
 # Admin register page.
 @app.route('/admin_register', methods=['GET', 'POST'])
