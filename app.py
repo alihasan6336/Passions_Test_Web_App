@@ -34,7 +34,7 @@ else :
     app.config["MYSQL_PASSWORD"] = "01019056677"
     app.config["MYSQL_DB"] = "passionstest"
     app.secret_key='secret123'
- 
+
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 app.config['SESSION_TYPE'] = 'filesystem'
 
