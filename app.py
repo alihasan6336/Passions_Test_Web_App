@@ -119,7 +119,7 @@ def PutChangesInDatabase(executeString, values):
 
 MAIN_COMPANY = "passion"
 MIN_GRADE = 19
-SUPER_ADMIN_ID = 1
+SUPER_ADMIN_ID = 5
 
 # Register page.
 @app.route('/register', methods=['GET', 'POST'])
