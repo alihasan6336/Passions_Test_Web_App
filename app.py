@@ -419,7 +419,7 @@ def Dashboard():
     # Reverse users order to show up in the dashboard from newest to oldest.
     users.reverse()
 
-    return render_template('dashboard.html', users=users)
+    return render_template('dashboard.html', users=users, super_admin_id=SUPER_ADMIN_ID)
 
 
 @app.route("/dashboard/<user_id>/set-access", methods=['POST'])
@@ -446,7 +446,7 @@ def DashboardSearch():
     if request.method == 'POST':
         return jsonify(results)
 
-    return render_template("dashboard.html", users=results)
+    return render_template("dashboard.html", users=results, super_admin_id=SUPER_ADMIN_ID)
 
 
 # Check if user logged in.
@@ -1131,7 +1131,7 @@ def CompaniesDashboard():
     companiesData = FetchFromTheDatabse("SELECT id, user_name, quota FROM companies")
     admins = FetchFromTheDatabse("SELECT * FROM admins")
 
-    return render_template('company_dashboard.html', companiesData=companiesData, admins=admins)
+    return render_template('company_dashboard.html', companiesData=companiesData, admins=admins, super_admin_id=SUPER_ADMIN_ID)
 
 
 @app.route("/<tapleField>/<adminID>", methods=['POST'])
