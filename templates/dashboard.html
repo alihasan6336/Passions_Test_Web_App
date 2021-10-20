@@ -38,7 +38,9 @@
 
                 <a href="/download_users"><button type="button" class="btn btn-default pull-left hvr-float-shadow" style="background-color: rgb(158,31,99); color: white; margin-bottom: 10px; margin-top: 10px; margin-right: 15px;">Excel</button></a>
                 <span style="font-size: 26px; padding: 4px; float:left; color: rgb(58, 58, 58);">Users: <span style="color: gray;" id="users-counter">{{users|length}}</span></span> 
+            </form>
 
+            <form action="/download_spasific_users" method="POST">
                 <table class="table table-striped">
                     <tr>
                         <th style="padding-left: 17px;">RP</th>
@@ -54,6 +56,7 @@
                         <th></th>
                         {% endif %}
 
+                        <th style="text-align: center;"><button class="btn btn-default hvr-float-shadow" style="background-color: rgb(158,31,99); color: white;">Export</button></th>
                         <th></th>
                     </tr>
                     <tbody id="users-rows">
@@ -72,7 +75,9 @@
                             {% else %}
                             <td></td>
                             {% endif %}
-                
+                            
+                            <td style="text-align: center;"><input type="checkbox" name="download_spasific_users" value="{{user['id']}}"></td>
+
                             {% if user['got_pre_a1'] != None %}
                             <td><span style="color: rgb(158,31,99); font-size: 30px;">•</span></td>
                             {%else%}
@@ -115,6 +120,9 @@
                                 "{% else %}"
                                 tr += "<td></td>";
                                 "{% endif %}"
+
+                                tr += "<td style='text-align: center;'><input type='checkbox' name='download_spasific_users' value='" + user.id + "'></td>";
+
 
                                 if (user.got_pre_a1 != null) {
                                     tr += "<td><span style='color: rgb(158,31,99); font-size: 30px;'>•</span></td>";

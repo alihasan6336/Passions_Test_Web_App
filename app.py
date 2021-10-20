@@ -393,7 +393,6 @@ def Logout():
         session.clear()
         return redirect('/' + company + "/login")
     else:
-        print(session)
         session.clear()
         return redirect(url_for("Login"))
 
@@ -983,11 +982,17 @@ def PassTest(id, test):
 
 @app.route("/download_users")
 @IsAdmin
-def DownloadUsers():
-    
-    # Get all users data.
-    users = FetchFromTheDatabseWithValue("SELECT id, name, phone, email, date FROM users WHERE company = %s", [session["admin_company"]])
+def DownloadUsers(usersId = []):
 
+    users = []
+
+    # Get spasific users.
+    if usersId:
+        for userId in usersId:
+            users.append(FetchFromTheDatabseWithValue("SELECT id, name, phone, email, date FROM users WHERE company = %s AND id = %s", [session["admin_company"], userId])[0])
+    # Get all users data.
+    else:
+        users = FetchFromTheDatabseWithValue("SELECT id, name, phone, email, date FROM users WHERE company = %s", [session["admin_company"]])
     # Get the last test for each user.
     usersTests = []
     for user in users:
@@ -1010,12 +1015,27 @@ def DownloadUsers():
         # Write users data.
         for user, userTest in zip(users, usersTests):
             writer.writerow(list(user.values()) + (list(userTest[0].values())[2:] if userTest else []))
-
     return send_file('users.csv',
     mimetype='text/csv',
     cache_timeout=0,
-    attachment_filename='users.csv',
+    attachment_filename='All users.csv',
     as_attachment=True)
+
+
+@app.route("/download_spasific_users", methods=['POST'])
+@IsAdmin
+def DownloadSpasificUsers():
+
+    usersId = request.form.getlist("download_spasific_users")
+    DownloadUsers(usersId)
+    if usersId:
+        return send_file('users.csv',
+        mimetype='text/csv',
+        cache_timeout=0,
+        attachment_filename='The spasific users.csv',
+        as_attachment=True)
+    else :
+        return redirect(url_for("Dashboard"))
 
 
 # Edit the time to add 2 hours to the GMT.
@@ -1174,7 +1194,6 @@ def AddQouta():
     companyActualQuota = FetchFromTheDatabseWithValue("SELECT quota FROM companies WHERE user_name = %s", [company])[0]['quota']
 
     finalQuota = companyActualQuota + addedQuota if companyActualQuota else addedQuota
-    print(type(companyActualQuota), type(addedQuota), 'kkkkkkkkkkkkkk', company)
     PutChangesInDatabase("UPDATE companies SET quota = %s WHERE user_name = %s", (finalQuota, company))
     
     return redirect(url_for("CompaniesDashboard"))
