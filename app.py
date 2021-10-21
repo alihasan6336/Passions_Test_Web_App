@@ -993,6 +993,7 @@ def DownloadUsers(usersId = []):
     # Get all users data.
     else:
         users = FetchFromTheDatabseWithValue("SELECT id, name, phone, email, date FROM users WHERE company = %s", [session["admin_company"]])
+    
     # Get the last test for each user.
     usersTests = []
     for user in users:
